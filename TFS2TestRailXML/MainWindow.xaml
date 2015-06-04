@@ -1,0 +1,19 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="WinMainWindow" x:Class="TFS2TestRailXML.MainWindow"
+        Title="TFS test case to TestRail XML" Height="255.333" Width="552" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Background="#FF375A79" Opacity="1" Margin="0,0,0,-1">
+        <Button x:Name="BtnConnect" Content="..." Height="23" HorizontalAlignment="Left" Margin="506,16,0,0" VerticalAlignment="Top" Width="23" Click="BtnConnect_Click" />
+        <Label x:Name="LblTestPlan" Content="Select a Test Plan" Height="28" HorizontalAlignment="Left" Margin="119,48,0,0" VerticalAlignment="Top" Width="128" BorderBrush="#E6191900" Foreground="AliceBlue" FontStyle="Italic" FontSize="13" HorizontalContentAlignment="Right" />
+        <Label x:Name="LblTestSuites" Content="Select a Test Suite" Height="28" HorizontalAlignment="Left" Margin="131,114,0,0" VerticalAlignment="Top" Width="116" Foreground="AliceBlue" FontStyle="Italic" FontSize="13" HorizontalContentAlignment="Right" />
+        <Label x:Name="Label1" Content="Connect to Team Foundation Server" Height="28" HorizontalAlignment="Left" Margin="27,14,0,0" VerticalAlignment="Top" Foreground="AliceBlue" FontStyle="Italic" FontSize="13" Width="220" HorizontalContentAlignment="Right" />
+        <Label x:Name="Label2" Content="Specify the path for the XML file" Height="28" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" FontSize="13" FontStyle="Italic" Foreground="AliceBlue" HorizontalContentAlignment="Right" Width="237" />
+        <Button x:Name="BtnOpenFileDialog" Content="..." Height="23" HorizontalAlignment="Left" Margin="506,83,0,0" VerticalAlignment="Top" Width="23" Click="BtnOpenFileDialog_Click" />
+        <TextBox x:Name="TbFileName" Height="23" Margin="252,83,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="253" />
+        <TextBox x:Name="TbTfs" Height="23" HorizontalAlignment="Left" Margin="252,16,0,0" VerticalAlignment="Top" Width="253" IsReadOnly="True" />
+        <TreeView x:Name="TvSuites" Height="93" HorizontalAlignment="Left" Margin="252,119,0,0" VerticalAlignment="Top" Width="277" Background="White" BorderBrush="Black" SelectedItemChanged="TvSuites_SelectedItemChanged" />
+        <ComboBox x:Name="CbTestPlans" HorizontalAlignment="Left" Margin="252,50,0,0" VerticalAlignment="Top" Width="277" AllowDrop="True" SelectionChanged="CbTestPlans_SelectionChanged"/>
+        <Button x:Name="btnGenerateXMLFile" Content="Generate XML File" HorizontalAlignment="Left" Margin="63,167,0,0" VerticalAlignment="Top" Width="130" Click="BtnGenerateXMLFile_Click" IsEnabled="False"/>
+    </Grid>
+</Window>
