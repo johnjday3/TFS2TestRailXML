@@ -151,7 +151,20 @@ namespace TFS2TestRailXML
             try
             {
                 var xmlDoc = new XmlDocument();
-                WriteRootSuite(rootSuite as IStaticTestSuite, xmlDoc);
+
+                if (rootSuite.TestSuiteType == TestSuiteType.StaticTestSuite)
+                {
+                    WriteRootSuite(rootSuite as IStaticTestSuite, xmlDoc);                    
+                }
+                if (rootSuite.TestSuiteType == TestSuiteType.DynamicTestSuite)
+                {
+                    WriteRootSuite(rootSuite as IDynamicTestSuite, xmlDoc);
+                }
+                if (rootSuite.TestSuiteType == TestSuiteType.RequirementTestSuite)
+                {
+                    WriteRootSuite(rootSuite as IRequirementTestSuite, xmlDoc);
+                }
+                
 
                 xmlDoc.Save(TbFileName.Text);
 
@@ -235,14 +248,56 @@ namespace TFS2TestRailXML
                     }
                 }
             }
-            if (testSuite.TestSuiteType == TestSuiteType.DynamicTestSuite)
+            /*if (testSuite.TestSuiteType == TestSuiteType.DynamicTestSuite)
             {
                 GetTestCases(testSuite as IDynamicTestSuite, xmlDoc, sectionsNode);
             }
             if (testSuite.TestSuiteType == TestSuiteType.RequirementTestSuite)
             {
                 GetTestCases(testSuite as IRequirementTestSuite, xmlDoc, sectionsNode);
-            }
+            }*/
+        }
+
+        void WriteRootSuite(IDynamicTestSuite testSuite, XmlDocument xmlDoc)
+        {
+            XmlNode rootNode = xmlDoc.CreateElement("suite");
+            xmlDoc.AppendChild(rootNode);
+
+            XmlNode idNode = xmlDoc.CreateElement("id");
+            rootNode.AppendChild(idNode);
+
+            XmlNode rootnameNode = xmlDoc.CreateElement("name");
+            rootnameNode.InnerText = testSuite.Plan.Name;
+            rootNode.AppendChild(rootnameNode);
+
+            XmlNode rootdescNode = xmlDoc.CreateElement("description");
+            rootdescNode.InnerText = testSuite.Plan.Description;
+            rootNode.AppendChild(rootdescNode);
+
+            XmlNode sectionsNode = xmlDoc.CreateElement("sections");
+            rootNode.AppendChild(sectionsNode);
+            GetTestCases(testSuite, xmlDoc, sectionsNode);    
+        }
+
+        void WriteRootSuite(IRequirementTestSuite testSuite, XmlDocument xmlDoc)
+        {
+            XmlNode rootNode = xmlDoc.CreateElement("suite");
+            xmlDoc.AppendChild(rootNode);
+
+            XmlNode idNode = xmlDoc.CreateElement("id");
+            rootNode.AppendChild(idNode);
+
+            XmlNode rootnameNode = xmlDoc.CreateElement("name");
+            rootnameNode.InnerText = testSuite.Plan.Name;
+            rootNode.AppendChild(rootnameNode);
+
+            XmlNode rootdescNode = xmlDoc.CreateElement("description");
+            rootdescNode.InnerText = testSuite.Plan.Description;
+            rootNode.AppendChild(rootdescNode);
+
+            XmlNode sectionsNode = xmlDoc.CreateElement("sections");
+            rootNode.AppendChild(sectionsNode);
+            GetTestCases(testSuite, xmlDoc, sectionsNode);
         }
 
         private XmlNode GetTestSuites(IStaticTestSuite staticTestSuite, XmlDocument xmlDoc)
