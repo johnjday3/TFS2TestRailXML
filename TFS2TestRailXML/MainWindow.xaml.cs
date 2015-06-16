@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Xml;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.TestManagement.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace TFS2TestRailXML
 {
@@ -248,14 +249,6 @@ namespace TFS2TestRailXML
                     }
                 }
             }
-            /*if (testSuite.TestSuiteType == TestSuiteType.DynamicTestSuite)
-            {
-                GetTestCases(testSuite as IDynamicTestSuite, xmlDoc, sectionsNode);
-            }
-            if (testSuite.TestSuiteType == TestSuiteType.RequirementTestSuite)
-            {
-                GetTestCases(testSuite as IRequirementTestSuite, xmlDoc, sectionsNode);
-            }*/
         }
 
         void WriteRootSuite(IDynamicTestSuite testSuite, XmlDocument xmlDoc)
@@ -431,13 +424,36 @@ namespace TFS2TestRailXML
             XmlNode milestoneNode = xmlDoc.CreateElement("milestone");
             caseNode.AppendChild(milestoneNode);
             XmlNode referencesNode = xmlDoc.CreateElement("references");
+
+            int i;
+            var j = 0;
+            for (i = 0; i <= testCase.WorkItem.WorkItemLinks.Count-1; i++)
+            {  
+                var workItemStore = new WorkItemStore(_tfs);
+                var workItem = workItemStore.GetWorkItem(testCase.WorkItem.WorkItemLinks[i].TargetId);
+                
+                if (workItem.Type.Name == "Product Backlog Item")
+                {
+                    if (j < 1)
+                    {
+                        referencesNode.InnerText = testCase.WorkItem.WorkItemLinks[i].TargetId.ToString();
+                        j++;
+                    }
+                    else
+                    {
+                        referencesNode.InnerText = referencesNode.InnerText + ", " + testCase.WorkItem.WorkItemLinks[i].TargetId.ToString();
+                    }
+
+                }
+
+            }
             caseNode.AppendChild(referencesNode);
             XmlNode customNode = xmlDoc.CreateElement("custom");
             caseNode.AppendChild(customNode);
             XmlNode stepsNode = xmlDoc.CreateElement("steps_separated");
             customNode.AppendChild(stepsNode);
            
-            var i = 1;
+            i = 1;
 
             foreach (ITestAction action in testCase.Actions)
             {
